@@ -46,7 +46,14 @@ public class Main {
                 .average();
         System.out.println("La media degli importi di tutti gli ordini è: " + mediaOrdini.getAsDouble()); //getasadouble, trasforma il risultato optional in double e lo stampa correttamente in console.
         System.out.println("------------------Esercizio 5-------------------------");
-        
+        Map<String, Double> prodottiPerCategoria = warehouse.stream()
+                .collect(Collectors.groupingBy(
+                        Product::getCategory,
+                        Collectors.summingDouble(Product::getPrice)//somma dei prodotti per categoria
+                        ));
+        prodottiPerCategoria.forEach((categoria, totale) -> System.out.println("Categoria: " + categoria + "Totale: " + totale));
+
+
     }
 
 
