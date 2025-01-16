@@ -25,21 +25,40 @@ public class Main {
 
         System.out.println("------------------Esercizio 1-------------------------");
 
-        getOrderPerCustomerList();
-
-        System.out.println("------------------Esercizio 2-------------------------");
-    }
-
-    public static void getOrderPerCustomerList() {
-        Map<Customer, List<Order>> ordersPerCustomer = orders.stream()
-                .collect(Collectors.groupingBy(Order::getCustomer));
+        Map<Customer, List<Order>> ordersPerCustomer = getOrderPerCustomerList();
         ordersPerCustomer.forEach((customer, orders1) ->
-                {
-                    System.out.println("Customer: " + customer.getName());
+                {System.out.println("Customer: " + customer.getName());
                     orders1.forEach(order ->
                             System.out.println("OrderId: " + order.getId() + ", products: " + order.getProducts()));
-                }
-        );
+                });
+
+        System.out.println("------------------Esercizio 2-------------------------");
+        calcTotalSalesPerCustomer(ordersPerCustomer);
+
+        System.out.println("------------------Esercizio 3-------------------------");
+        List<Product> prodottiCostosi = warehouse.stream()
+                .sorted(Comparator.comparing(Product::getPrice).reversed())
+                .collect(Collectors.toList());
+        System.out.println(prodottiCostosi);
+        System.out.println("------------------Esercizio 4-------------------------");
+
+    }
+
+
+
+    public static void calcTotalSalesPerCustomer(Map<Customer, List<Order>> ordersPerCustomer) {
+        ordersPerCustomer.forEach((customer, orders1) -> {
+            double totaleOrdini = orders1.stream()
+                    .mapToDouble(Order::getTotal)
+                    .sum();
+            System.out.println("Cliente: " + customer.getName() + " Totale ordini: " + totaleOrdini);
+        });
+    }
+
+    public static Map<Customer, List<Order>> getOrderPerCustomerList() {
+        Map<Customer, List<Order>> ordersPerCustomer = orders.stream()
+                .collect(Collectors.groupingBy(Order::getCustomer));
+        return ordersPerCustomer;
     }
 
     public static void initializeWarehouse() {
