@@ -4,13 +4,11 @@ import org.example.entities.Customer;
 import org.example.entities.Order;
 import org.example.entities.Product;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Hello world!
- *
  */
 public class Main {
 
@@ -19,11 +17,31 @@ public class Main {
     static List<Customer> customers = new ArrayList<>();
     static List<Order> orders = new ArrayList<>();
 
-    public static void main( String[] args ) {
+    public static void main(String[] args) {
         initializeWarehouse();
         createCustomers();
         placeOrders();
+
+
+        System.out.println("------------------Esercizio 1-------------------------");
+
+        getOrderPerCustomerList();
+
+        System.out.println("------------------Esercizio 2-------------------------");
     }
+
+    public static void getOrderPerCustomerList() {
+        Map<Customer, List<Order>> ordersPerCustomer = orders.stream()
+                .collect(Collectors.groupingBy(Order::getCustomer));
+        ordersPerCustomer.forEach((customer, orders1) ->
+                {
+                    System.out.println("Customer: " + customer.getName());
+                    orders1.forEach(order ->
+                            System.out.println("OrderId: " + order.getId() + ", products: " + order.getProducts()));
+                }
+        );
+    }
+
     public static void initializeWarehouse() {
         Product iPhone = new Product("IPhone", "Smartphones", 2000.0);
         Product lotrBook = new Product("LOTR", "Books", 101);
