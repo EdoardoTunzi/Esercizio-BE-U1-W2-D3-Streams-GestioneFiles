@@ -41,7 +41,12 @@ public class Main {
                 .collect(Collectors.toList());
         System.out.println(prodottiCostosi);
         System.out.println("------------------Esercizio 4-------------------------");
-
+        OptionalDouble mediaOrdini = orders.stream()
+                .mapToDouble(Order::getTotal)
+                .average();
+        System.out.println("La media degli importi di tutti gli ordini è: " + mediaOrdini.getAsDouble()); //getasadouble, trasforma il risultato optional in double e lo stampa correttamente in console.
+        System.out.println("------------------Esercizio 5-------------------------");
+        
     }
 
 
